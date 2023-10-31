@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { loadState, saveState } from "./localStorage";
 import "./App.css";
 
 function App() {
@@ -6,6 +7,24 @@ function App() {
   const [fruitsVegetables, setFruitsVegetables] = useState([]);
   const [freezer, setFreezer] = useState([]);
   const [newItem, setNewItem] = useState("");
+  useEffect(() => {
+    // Sayfa ilk açıldığında localStorage'dan verileri almaya yarar :)
+    const storedMeats = loadState("meats");
+    const storedFruitsVegetables = loadState("fruitsVegetables");
+    const storedFreezer = loadState("freezer");
+
+    if (storedMeats) {
+      setMeats(storedMeats);
+    }
+
+    if (storedFruitsVegetables) {
+      setFruitsVegetables(storedFruitsVegetables);
+    }
+
+    if (storedFreezer) {
+      setFreezer(storedFreezer);
+    }
+  }, []);
 
   const handleAddItem = (category) => {
     if (newItem.trim() !== "") {
@@ -56,6 +75,12 @@ function App() {
         break;
     }
   };
+  useEffect(() => {
+    // Herhangi bir veri değiştiğinde, localStorage'a verileri kaydeder
+    saveState("meats", meats);
+    saveState("fruitsVegetables", fruitsVegetables);
+    saveState("freezer", freezer);
+  }, [meats, fruitsVegetables, freezer]);
 
   return (
     <div className="container">
