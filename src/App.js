@@ -6,12 +6,14 @@ function App() {
   const [meats, setMeats] = useState([]);
   const [fruitsVegetables, setFruitsVegetables] = useState([]);
   const [freezer, setFreezer] = useState([]);
-  const [meatsInput, setMeatsInput] = useState(""); // Meat için ayrı input state'i
-  const [fruitsVegetablesInput, setFruitsVegetablesInput] = useState(""); // Meyve/Zebzeler için ayrı input state'i
-  const [freezerInput, setFreezerInput] = useState(""); // Dondurucu için ayrı input state'i
+  const [meatsInput, setMeatsInput] = useState("");
+  const [fruitsVegetablesInput, setFruitsVegetablesInput] = useState("");
+  const [freezerInput, setFreezerInput] = useState("");
+  const [imagePath, setImagePath] = useState(
+    process.env.PUBLIC_URL + "/fotograflar/image1.jpg"
+  );
 
   useEffect(() => {
-    // Sayfa ilk açıldığında localStorage'dan verileri almaya yarar :)
     const storedMeats = loadState("meats");
     const storedFruitsVegetables = loadState("fruitsVegetables");
     const storedFreezer = loadState("freezer");
@@ -34,17 +36,20 @@ function App() {
       switch (category) {
         case "meats":
           setMeats([...meats, inputState]);
+          setImagePath(process.env.PUBLIC_URL + "/fotograflar/image2.jpg");
           break;
         case "fruitsVegetables":
           setFruitsVegetables([...fruitsVegetables, inputState]);
+          setImagePath(process.env.PUBLIC_URL + "/fotograflar/image2.jpg");
           break;
         case "freezer":
           setFreezer([...freezer, inputState]);
+          setImagePath(process.env.PUBLIC_URL + "/fotograflar/image1.jpg");
           break;
         default:
           break;
       }
-      setInputState(""); // Ekleme işlemi sonrasında input'u temizle
+      setInputState("");
     }
   };
 
@@ -80,7 +85,6 @@ function App() {
   };
 
   useEffect(() => {
-    // Herhangi bir veri değiştiğinde, localStorage'a verileri kaydeder
     saveState("meats", meats);
     saveState("fruitsVegetables", fruitsVegetables);
     saveState("freezer", freezer);
@@ -168,6 +172,9 @@ function App() {
         >
           Ekle
         </button>
+      </div>
+      <div className="image-container">
+        <img src={imagePath} alt="Resim" style={{ cursor: "pointer" }} />
       </div>
     </div>
   );
