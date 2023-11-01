@@ -6,7 +6,10 @@ function App() {
   const [meats, setMeats] = useState([]);
   const [fruitsVegetables, setFruitsVegetables] = useState([]);
   const [freezer, setFreezer] = useState([]);
-  const [newItem, setNewItem] = useState("");
+  const [meatsInput, setMeatsInput] = useState(""); // Meat için ayrı input state'i
+  const [fruitsVegetablesInput, setFruitsVegetablesInput] = useState(""); // Meyve/Zebzeler için ayrı input state'i
+  const [freezerInput, setFreezerInput] = useState(""); // Dondurucu için ayrı input state'i
+
   useEffect(() => {
     // Sayfa ilk açıldığında localStorage'dan verileri almaya yarar :)
     const storedMeats = loadState("meats");
@@ -26,22 +29,22 @@ function App() {
     }
   }, []);
 
-  const handleAddItem = (category) => {
-    if (newItem.trim() !== "") {
+  const handleAddItem = (category, inputState, setInputState) => {
+    if (inputState.trim() !== "") {
       switch (category) {
         case "meats":
-          setMeats([...meats, newItem]);
+          setMeats([...meats, inputState]);
           break;
         case "fruitsVegetables":
-          setFruitsVegetables([...fruitsVegetables, newItem]);
+          setFruitsVegetables([...fruitsVegetables, inputState]);
           break;
         case "freezer":
-          setFreezer([...freezer, newItem]);
+          setFreezer([...freezer, inputState]);
           break;
         default:
           break;
       }
-      setNewItem("");
+      setInputState(""); // Ekleme işlemi sonrasında input'u temizle
     }
   };
 
@@ -75,6 +78,7 @@ function App() {
         break;
     }
   };
+
   useEffect(() => {
     // Herhangi bir veri değiştiğinde, localStorage'a verileri kaydeder
     saveState("meats", meats);
@@ -98,10 +102,14 @@ function App() {
         </ul>
         <input
           type="text"
-          value={newItem}
-          onChange={(e) => setNewItem(e.target.value)}
+          value={meatsInput}
+          onChange={(e) => setMeatsInput(e.target.value)}
         />
-        <button onClick={() => handleAddItem("meats")}>Ekle</button>
+        <button
+          onClick={() => handleAddItem("meats", meatsInput, setMeatsInput)}
+        >
+          Ekle
+        </button>
       </div>
 
       <div>
@@ -120,10 +128,20 @@ function App() {
         </ul>
         <input
           type="text"
-          value={newItem}
-          onChange={(e) => setNewItem(e.target.value)}
+          value={fruitsVegetablesInput}
+          onChange={(e) => setFruitsVegetablesInput(e.target.value)}
         />
-        <button onClick={() => handleAddItem("fruitsVegetables")}>Ekle</button>
+        <button
+          onClick={() =>
+            handleAddItem(
+              "fruitsVegetables",
+              fruitsVegetablesInput,
+              setFruitsVegetablesInput
+            )
+          }
+        >
+          Ekle
+        </button>
       </div>
 
       <div>
@@ -140,10 +158,16 @@ function App() {
         </ul>
         <input
           type="text"
-          value={newItem}
-          onChange={(e) => setNewItem(e.target.value)}
+          value={freezerInput}
+          onChange={(e) => setFreezerInput(e.target.value)}
         />
-        <button onClick={() => handleAddItem("freezer")}>Ekle</button>
+        <button
+          onClick={() =>
+            handleAddItem("freezer", freezerInput, setFreezerInput)
+          }
+        >
+          Ekle
+        </button>
       </div>
     </div>
   );
