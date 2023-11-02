@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { loadState, saveState } from "./localStorage";
+
+import Input from "./Textarea";
+
 import "./App.css";
 
 function App() {
@@ -104,16 +107,12 @@ function App() {
             </li>
           ))}
         </ul>
-        <input
-          type="text"
-          value={meatsInput}
-          onChange={(e) => setMeatsInput(e.target.value)}
+        <Input
+          category="meats"
+          inputState={meatsInput}
+          setInputState={setMeatsInput}
+          handleAddItem={handleAddItem}
         />
-        <button
-          onClick={() => handleAddItem("meats", meatsInput, setMeatsInput)}
-        >
-          Ekle
-        </button>
       </div>
 
       <div>
@@ -130,22 +129,12 @@ function App() {
             </li>
           ))}
         </ul>
-        <input
-          type="text"
-          value={fruitsVegetablesInput}
-          onChange={(e) => setFruitsVegetablesInput(e.target.value)}
+        <Input
+          category="fruitsVegetables"
+          inputState={fruitsVegetablesInput}
+          setInputState={setFruitsVegetablesInput}
+          handleAddItem={handleAddItem}
         />
-        <button
-          onClick={() =>
-            handleAddItem(
-              "fruitsVegetables",
-              fruitsVegetablesInput,
-              setFruitsVegetablesInput
-            )
-          }
-        >
-          Ekle
-        </button>
       </div>
 
       <div>
@@ -160,18 +149,12 @@ function App() {
             </li>
           ))}
         </ul>
-        <input
-          type="text"
-          value={freezerInput}
-          onChange={(e) => setFreezerInput(e.target.value)}
+        <Input
+          category="freezer"
+          inputState={freezerInput}
+          setInputState={setFreezerInput}
+          handleAddItem={handleAddItem}
         />
-        <button
-          onClick={() =>
-            handleAddItem("freezer", freezerInput, setFreezerInput)
-          }
-        >
-          Ekle
-        </button>
       </div>
       <div className="image-container">
         <img src={imagePath} alt="Resim" style={{ cursor: "pointer" }} />
