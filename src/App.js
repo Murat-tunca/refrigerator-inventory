@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { loadState, saveState } from "./localStorage";
-
-import Input from "./Textarea";
-
 import "./App.css";
-
+import Input from "./Input";
 function App() {
   const [meats, setMeats] = useState([]);
   const [fruitsVegetables, setFruitsVegetables] = useState([]);
@@ -34,24 +31,30 @@ function App() {
     }
   }, []);
 
-  const handleAddItem = (category, inputState, setInputState) => {
+  const handleAddItem = (category, inputState, setInputState, message) => {
     if (inputState.trim() !== "") {
+      const newItem = {
+        name: inputState,
+        message: message,
+      };
+
       switch (category) {
         case "meats":
-          setMeats([...meats, inputState]);
+          setMeats([...meats, newItem]);
           setImagePath(process.env.PUBLIC_URL + "/fotograflar/image2.jpeg");
           break;
         case "fruitsVegetables":
-          setFruitsVegetables([...fruitsVegetables, inputState]);
+          setFruitsVegetables([...fruitsVegetables, newItem]);
           setImagePath(process.env.PUBLIC_URL + "/fotograflar/image2.jpeg");
           break;
         case "freezer":
-          setFreezer([...freezer, inputState]);
+          setFreezer([...freezer, newItem]);
           setImagePath(process.env.PUBLIC_URL + "/fotograflar/image1.jpeg");
           break;
         default:
           break;
       }
+
       setInputState("");
     }
   };
@@ -106,7 +109,7 @@ function App() {
         <ul>
           {meats.map((item, index) => (
             <li key={index}>
-              {item}
+              {item.name} {item.message && `(${item.message})`}
               <button onClick={() => handleRemoveItem("meats", index)}>
                 X
               </button>
@@ -132,7 +135,7 @@ function App() {
         <ul>
           {fruitsVegetables.map((item, index) => (
             <li key={index}>
-              {item}
+              {item.name} {item.message && `(${item.message})`}
               <button
                 onClick={() => handleRemoveItem("fruitsVegetables", index)}
               >
@@ -160,7 +163,7 @@ function App() {
         <ul>
           {freezer.map((item, index) => (
             <li key={index}>
-              {item}
+              {item.name} {item.message && `(${item.message})`}
               <button onClick={() => handleRemoveItem("freezer", index)}>
                 X
               </button>
