@@ -12,7 +12,17 @@ function App() {
   const [imagePath, setImagePath] = useState(
     process.env.PUBLIC_URL + "/fotograflar/image1.jpeg"
   );
+  const calculateSKT = (addDays, maxDays) => {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + addDays);
+    const sktDate = new Date(currentDate);
+    sktDate.setDate(sktDate.getDate() + maxDays);
+    const remainingDays = Math.floor(
+      (sktDate - currentDate) / (1000 * 60 * 60 * 24)
+    );
 
+    return remainingDays;
+  };
   useEffect(() => {
     const storedMeats = loadState("meats");
     const storedFruitsVegetables = loadState("fruitsVegetables");
@@ -120,7 +130,15 @@ function App() {
           category="meats"
           inputState={meatsInput}
           setInputState={setMeatsInput}
-          handleAddItem={handleAddItem}
+          handleAddItem={(category, inputState, setInputState, message) => {
+            const skt = calculateSKT(7, 7);
+            handleAddItem(
+              category,
+              inputState,
+              setInputState,
+              `${message} - SKT: ${skt} gün kaldı.`
+            );
+          }}
         />
       </div>
 
@@ -148,7 +166,15 @@ function App() {
           category="fruitsVegetables"
           inputState={fruitsVegetablesInput}
           setInputState={setFruitsVegetablesInput}
-          handleAddItem={handleAddItem}
+          handleAddItem={(category, inputState, setInputState, message) => {
+            const skt = calculateSKT(7, 7);
+            handleAddItem(
+              category,
+              inputState,
+              setInputState,
+              `${message} - SKT: ${skt} gün kaldı.`
+            );
+          }}
         />
       </div>
 
@@ -174,7 +200,15 @@ function App() {
           category="freezer"
           inputState={freezerInput}
           setInputState={setFreezerInput}
-          handleAddItem={handleAddItem}
+          handleAddItem={(category, inputState, setInputState, message) => {
+            const skt = calculateSKT(0, 180);
+            handleAddItem(
+              category,
+              inputState,
+              setInputState,
+              `${message} - SKT: ${skt} gün kaldı.`
+            );
+          }}
         />
       </div>
       <div className="image-container">
