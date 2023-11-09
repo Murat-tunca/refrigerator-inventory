@@ -1,7 +1,13 @@
+body {
+  background-color: #f0f0f0;
+}
+
 .container {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  background-color: #ffffff;
+  padding: 20px;
 }
 
 section {
@@ -21,20 +27,23 @@ li {
 }
 
 button {
-  background: #ff6347;
+  background: #87cefa;
   color: white;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
 }
+
 .meyveler {
   width: 200px;
   height: 82 px;
 }
+
 .etsut {
   width: 210px;
   height: 125px;
 }
+
 .dondurucu {
   width: 210px;
   height: 125px;
