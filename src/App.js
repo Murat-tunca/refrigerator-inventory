@@ -1,7 +1,10 @@
+// App.js
 import React, { useState, useEffect } from "react";
 import { loadState, saveState } from "./localStorage";
 import "./App.css";
 import Input from "./Input";
+import SearchFilter from "./SearchFilter";
+
 function App() {
   const [meats, setMeats] = useState([]);
   const [fruitsVegetables, setFruitsVegetables] = useState([]);
@@ -12,6 +15,9 @@ function App() {
   const [imagePath, setImagePath] = useState(
     process.env.PUBLIC_URL + "/fotograflar/image1.jpeg"
   );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+
   const calculateSKT = (addDays, maxDays) => {
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + addDays);
@@ -23,6 +29,7 @@ function App() {
 
     return remainingDays;
   };
+
   useEffect(() => {
     const storedMeats = loadState("meats");
     const storedFruitsVegetables = loadState("fruitsVegetables");
@@ -46,6 +53,7 @@ function App() {
       const newItem = {
         name: inputState,
         message: message,
+        category: category, // Yeni özellik: Kategori eklenmiş
       };
 
       switch (category) {
@@ -106,8 +114,49 @@ function App() {
     saveState("freezer", freezer);
   }, [meats, fruitsVegetables, freezer]);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const handleFilter = (category) => {
+    setFilterCategory(category);
+  };
+
+  const getFilteredItems = () => {
+    let filteredItems = [];
+    switch (filterCategory) {
+      case "meats":
+        filteredItems = meats;
+        break;
+      case "fruitsVegetables":
+        filteredItems = fruitsVegetables;
+        break;
+      case "freezer":
+        filteredItems = freezer;
+        break;
+      default:
+        filteredItems = [...meats, ...fruitsVegetables, ...freezer];
+        break;
+    }
+
+    if (searchTerm) {
+      filteredItems = filteredItems.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return filteredItems;
+  };
+
+  const filteredItems = getFilteredItems();
+
   return (
     <div className="container">
+      <SearchFilter
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
+        handleFilter={handleFilter}
+      />
       <div>
         <div>
           <img
@@ -117,14 +166,16 @@ function App() {
         </div>
         <h2>Et ve Süt Ürünleri</h2>
         <ul>
-          {meats.map((item, index) => (
-            <li key={index}>
-              {item.name} {item.message && `(${item.message})`}
-              <button onClick={() => handleRemoveItem("meats", index)}>
-                X
-              </button>
-            </li>
-          ))}
+          {filteredItems
+            .filter((item) => item.category === "meats")
+            .map((item, index) => (
+              <li key={index}>
+                {item.name} {item.message && `(${item.message})`}
+                <button onClick={() => handleRemoveItem(item.category, index)}>
+                  X
+                </button>
+              </li>
+            ))}
         </ul>
         <Input
           category="meats"
@@ -151,16 +202,16 @@ function App() {
         </div>
         <h2>Meyve ve Sebzeler</h2>
         <ul>
-          {fruitsVegetables.map((item, index) => (
-            <li key={index}>
-              {item.name} {item.message && `(${item.message})`}
-              <button
-                onClick={() => handleRemoveItem("fruitsVegetables", index)}
-              >
-                X
-              </button>
-            </li>
-          ))}
+          {filteredItems
+            .filter((item) => item.category === "fruitsVegetables")
+            .map((item, index) => (
+              <li key={index}>
+                {item.name} {item.message && `(${item.message})`}
+                <button onClick={() => handleRemoveItem(item.category, index)}>
+                  X
+                </button>
+              </li>
+            ))}
         </ul>
         <Input
           category="fruitsVegetables"
@@ -187,14 +238,16 @@ function App() {
         </div>
         <h2>Dondurucu İçindekiler</h2>
         <ul>
-          {freezer.map((item, index) => (
-            <li key={index}>
-              {item.name} {item.message && `(${item.message})`}
-              <button onClick={() => handleRemoveItem("freezer", index)}>
-                X
-              </button>
-            </li>
-          ))}
+          {filteredItems
+            .filter((item) => item.category === "freezer")
+            .map((item, index) => (
+              <li key={index}>
+                {item.name} {item.message && `(${item.message})`}
+                <button onClick={() => handleRemoveItem(item.category, index)}>
+                  X
+                </button>
+              </li>
+            ))}
         </ul>
         <Input
           category="freezer"
