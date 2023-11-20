@@ -1,4 +1,3 @@
-// SearchFilter.js
 import React from "react";
 
 function SearchFilter({ searchTerm, handleSearch, handleFilter }) {
