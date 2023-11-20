@@ -48,12 +48,19 @@ function App() {
     }
   }, []);
 
-  const handleAddItem = (category, inputState, setInputState, message) => {
+  const handleAddItem = (
+    category,
+    inputState,
+    setInputState,
+    message,
+    maxDays
+  ) => {
     if (inputState.trim() !== "") {
       const newItem = {
         name: inputState,
         message: message,
-        category: category, // Yeni özellik: Kategori eklenmiş
+        category: category,
+        skt: calculateSKT(maxDays),
       };
 
       switch (category) {
@@ -149,6 +156,16 @@ function App() {
   };
 
   const filteredItems = getFilteredItems();
+  const getCurrentDate = () => {
+    const currentDate = new Date();
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return currentDate.toLocaleDateString("tr-TR", options);
+  };
 
   return (
     <div className="container">
@@ -271,6 +288,7 @@ function App() {
           style={{ cursor: "pointer", width: "400px", height: "500px" }}
         />
       </div>
+      <div className="current-date"> Tarih: {getCurrentDate()}</div>
     </div>
   );
 }
