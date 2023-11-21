@@ -8,6 +8,8 @@ body {
   gap: 20px;
   background-color: #ffffff;
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 section {
@@ -27,13 +29,18 @@ li {
 }
 
 button {
-  background: #87cefa;
+  background: #007bff;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 8px 15px;
   cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
+button:hover {
+  background-color: #0056b3;
+}
 .meyveler {
   width: 200px;
   height: 82 px;
